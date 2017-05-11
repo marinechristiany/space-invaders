@@ -2,13 +2,22 @@
 	var divBouge = document.querySelector('.cat');
 	var shut = document.querySelector('.tir');
 	var style = window.getComputedStyle(divBouge, false);
+	var cpt = 8;
 
+	var startScreen = document.querySelector('.letsplay');
+	var playButton = document.querySelector('.playbutton');
+	var gameScreen = document.querySelector('.game')
 
 	page.addEventListener("keydown", fleches);			// Ecouteur d'evenement pour les touches du clavier
+	playButton.addEventListener("click", start);
 
 
-	
 
+
+	function start (){
+		startScreen.classList.add('hidden');
+		gameScreen.classList.remove('hidden');
+	}
 
 
 
@@ -38,24 +47,13 @@
 
 
 		else if(event.keyCode === 32){							// Si la touche pressée est espace
+
 			tir();
 
 		}
 	}
 
 	
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -73,6 +71,7 @@
 		var pos = 0;
 		var id = setInterval(animBullets, 1);
 		var newBullet =  document.createElement("div");
+
 			
 			newBullet.classList.add('tir');
 			bulletsDiv.appendChild(newBullet);
@@ -83,44 +82,59 @@
 				if (newBullet.getBoundingClientRect().top == parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(newBullet.getBoundingClientRect().height)) {
 				    clearInterval(id);									// arrete le setInterval quand on arrive a 70px du top de la page
 				    deleteBullet();
-				} /*else if {
 
-
-				}*/ else {
+				} else {
 				    pos++; 												// ajoute 1 a pos
 				    newBullet.style.top = - pos + 'px';						// modifie la position top de la div tir
-				    testkillInvader()
-				}
-			}
-
-
-			function deleteBullet(){
-				if(bulletsDiv.hasChildNodes()){
-					bulletsDiv.removeChild(bulletsDiv.firstChild);
+				    killInvader();
 				}
 			}
 	}
 
 
-	function testkillInvader(){
-		var shut = document.querySelector('.tir');
-
-
-		var vingtun = document.getElementById('21');
-		var vingtdeux = document.getElementById('22');
-		var vingttrois = document.getElementById('23');
 
 
 
-		var posBullet = shut.getBoundingClientRect();
-		var posVingtun = vingtun.getBoundingClientRect();
 
-		if(parseInt(posBullet.right) <= parseInt(posVingtun.right) || parseInt(posBullet.left) <= parseInt(posVingtun.left)){
-			vingtun.classList.add('hidden');
-			vingtun.classList.remove('invader');
 
-			// CA TOUCHE MAIS SUR TOUTE LA HAUTEUR DE LA PAGE.
+	function deleteBullet(){
+		var bulletsDiv = document.querySelector('.bulletsdiv');
+		var shuts = document.querySelectorAll('.tir');
+				
+		if(bulletsDiv.hasChildNodes()){
+			bulletsDiv.removeChild(bulletsDiv.firstChild);
+
+			for(var v=0; v<bulletsDiv.length; v++){
+
+				if(shuts[v].getBoundingClientRect().top == parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(shuts[v].getBoundingClientRect().height)){
+					bulletsDiv.removeChild(shuts[v])
+				}
+			}
 		}
 	}
 
-	
+
+
+
+	function killInvader(){
+		var bulletsDiv = document.querySelector('.bulletsdiv');
+		var shuts = document.querySelectorAll('.tir');
+		var invaders = document.querySelectorAll('.invader');
+
+		for(j=0; j<shuts.length; j++){
+
+			for(i=0; i<invaders.length; i++){
+
+				if(parseInt(shuts[j].getBoundingClientRect().left) >= parseInt(invaders[i].getBoundingClientRect().left)  && parseInt(shuts[j].getBoundingClientRect().right) <= parseInt(invaders[i].getBoundingClientRect().right)){
+					if(parseInt(shuts[j].getBoundingClientRect().top) >= parseInt(invaders[i].getBoundingClientRect().top) && parseInt(shuts[j].getBoundingClientRect().bottom) <= parseInt(invaders[i].getBoundingClientRect().bottom)){
+						invaders[i].classList.add('invader-hidden');
+						invaders[i].classList.remove('invader');
+
+						shuts[j].classList.add('hidden');
+						bulletsDiv.removeChild(shuts[j]);
+
+					}
+				} 
+			}
+		}
+	}
