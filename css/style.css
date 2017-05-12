@@ -69,7 +69,9 @@ section{
     align-items: flex-start;
     width: 60%;
     height: 50%;
-    margin: auto;
+    position: absolute;
+    left: 5%;
+    top:7%;
 }
 
 .invadersRow:nth-child(odd){
@@ -137,7 +139,7 @@ section{
     height: 20px;
     border-radius: 50%;
     background-color: green;
-    position: absolute;
+    position: relative;
     left: 35px;
     bottom: 0;
 }

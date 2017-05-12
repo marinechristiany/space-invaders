@@ -11,10 +11,7 @@
 
 
 
-	setTimeout("tirEnnemis()", 4000);
 
-	page.addEventListener("keydown", fleches);			// Ecouteur d'evenement pour les touches du clavier
-	page.addEventListener("keyup", espace);
 	playButton.addEventListener("click", start);
 
 
@@ -23,6 +20,65 @@
 	function start (){
 		startScreen.classList.add('hidden');
 		gameScreen.classList.remove('hidden');
+
+		setTimeout("tirEnnemis()", 4000);
+
+		page.addEventListener("keydown", fleches);			// Ecouteur d'evenement pour les touches du clavier
+		page.addEventListener("keyup", espace);
+
+		var interval = setInterval(move, 10);
+		var invadersGroup = document.querySelector(".invadersGroup");
+		var margeGauche = invadersGroup.offsetLeft;
+
+	
+		var wScreen = window.innerWidth;
+		var pos = margeGauche;
+		var direction = "droite";
+
+		var invaders = document.querySelectorAll('.invader'); // recupere tous les pains de mie
+
+
+			function move(){
+
+			var wInvaders = invadersGroup.offsetWidth;
+			var wMove = wScreen - wInvaders - (margeGauche*2);
+
+
+			    if(direction == "droite"){
+			       
+			        if (pos < wMove){
+			            pos++;
+			            invadersGroup.style.left = pos + "px";
+			        }
+			        else{
+			        	 console.log("else")
+			            invadersGroup.style.top = invadersGroup.offsetTop + 5 + "px";
+			            direction = "gauche";
+			        }
+
+			    }else{
+			        
+			        if (pos > margeGauche){
+			            pos--;
+			            invadersGroup.style.left = pos + "px";
+			        }
+			        else{
+			            invadersGroup.style.top = invadersGroup.offsetTop + 5 + "px";
+			            direction = "droite";
+			        }   
+			    }
+
+			    if(invadersGroup.getBoundingClientRect().bottom >= parseInt(divBouge.offsetTop + 25)){
+
+				    for(var g=0; g<invaders.length; g++){
+				    	if(invaders[g].getBoundingClientRect().bottom >= divBouge.getBoundingClientRect().top){
+				    		looseScreen.classList.remove('hidden');
+							gameScreen.classList.add('hidden');
+				    	}
+				    }
+				}
+
+			}
 	}
 
 
@@ -55,7 +111,7 @@
 	
 	function espace (event){
 		if(event.keyCode === 32){							// Si la touche pressée est espace
-			
+
 			tir();
 
 		}
@@ -101,7 +157,7 @@
 
 
 	function tirEnnemis (){
-		var tabBulletsEnnemis = document.querySelectorAll('.invaderlaser');
+		var tabBulletsEnnemis = document.querySelectorAll('.invader');
 		var x = parseInt(Math.random()*(tabBulletsEnnemis.length));
 		var ennemiSelected = tabBulletsEnnemis[x];
 		var header = document.querySelector('.gameTitle');
@@ -109,14 +165,15 @@
 		var pos = 0;
 		var id = setInterval(animBullets, 1);
 		var newBullet =  document.createElement("div");
-			
+		var invadersGroup = document.querySelector(".invadersGroup");
+		
 			newBullet.classList.add('laserennemi');
 			tabBulletsEnnemis[x].appendChild(newBullet);
 
-			for(var w=0; w<tabBulletsEnnemis.length; w++){
+/*			for(var w=0; w<tabBulletsEnnemis.length; w++){
 				tabBulletsEnnemis[w].style.left = - parseInt(document.querySelector('.invader').getBoundingClientRect().width) + "px";
 			}
-
+*/
 
 			function animBullets() {										// fonction qui bouge la div tir
 				if (newBullet.getBoundingClientRect().top == -(parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(newBullet.getBoundingClientRect().height))) {
@@ -200,3 +257,13 @@
 			} 
 		}
 	}
+
+
+
+
+
+
+
+
+
+
