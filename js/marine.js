@@ -6,7 +6,12 @@
 
 	var startScreen = document.querySelector('.letsplay');
 	var playButton = document.querySelector('.playbutton');
-	var gameScreen = document.querySelector('.game')
+	var gameScreen = document.querySelector('.game');
+	var looseScreen = document.querySelector('.loose');
+
+
+
+	setTimeout("tirEnnemis()", 4000);
 
 	page.addEventListener("keydown", fleches);			// Ecouteur d'evenement pour les touches du clavier
 	playButton.addEventListener("click", start);
@@ -47,7 +52,6 @@
 
 
 		else if(event.keyCode === 32){							// Si la touche pressée est espace
-
 			tir();
 
 		}
@@ -94,6 +98,41 @@
 
 
 
+	function tirEnnemis (){
+		var tabBulletsEnnemis = document.querySelectorAll('.invaderlaser');
+		var x = parseInt(Math.random()*(tabBulletsEnnemis.length));
+		var ennemiSelected = tabBulletsEnnemis[x];
+		var header = document.querySelector('.gameTitle');
+		var headerHeight = header.getBoundingClientRect();
+		var pos = 0;
+		var id = setInterval(animBullets, 1);
+		var newBullet =  document.createElement("div");
+			
+			newBullet.classList.add('laserennemi');
+			tabBulletsEnnemis[x].appendChild(newBullet);
+
+			for(var w=0; w<tabBulletsEnnemis.length; w++){
+				tabBulletsEnnemis[w].style.left = - parseInt(document.querySelector('.invader').getBoundingClientRect().width) + "px";
+			}
+
+
+			function animBullets() {										// fonction qui bouge la div tir
+				if (newBullet.getBoundingClientRect().top == -(parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(newBullet.getBoundingClientRect().height))) {
+				    clearInterval(id);									// arrete le setInterval quand on arrive a 70px du top de la page
+				    deleteBullet();
+
+				} else {
+				    pos++; 												// ajoute 1 a pos
+				    newBullet.style.top = pos + 'px';						// modifie la position top de la div tir
+				    perdu();
+				}
+			}
+
+		setTimeout("tirEnnemis()", 3000);
+	}
+
+
+
 
 
 
@@ -136,5 +175,26 @@
 					}
 				} 
 			}
+		}
+	}
+
+
+
+
+	function perdu() {
+
+		var allLaserEnnemi = document.querySelectorAll('.laserennemi');
+
+		for(var y=0; y<allLaserEnnemi.length; y++){
+
+			if(parseInt(allLaserEnnemi[y].getBoundingClientRect().left) >= parseInt(divBouge.getBoundingClientRect().left)  && parseInt(allLaserEnnemi[y].getBoundingClientRect().right) <= parseInt(divBouge.getBoundingClientRect().right)){
+				
+				if(parseInt(allLaserEnnemi[y].getBoundingClientRect().top) >= parseInt(divBouge.getBoundingClientRect().top) && parseInt(allLaserEnnemi[y].getBoundingClientRect().bottom) <= parseInt(divBouge.getBoundingClientRect().bottom)){
+					
+					looseScreen.classList.remove('hidden');
+					gameScreen.classList.add('hidden');
+
+				}
+			} 
 		}
 	}
