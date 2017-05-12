@@ -14,6 +14,7 @@
 	setTimeout("tirEnnemis()", 4000);
 
 	page.addEventListener("keydown", fleches);			// Ecouteur d'evenement pour les touches du clavier
+	page.addEventListener("keyup", espace);
 	playButton.addEventListener("click", start);
 
 
@@ -49,15 +50,16 @@
 			}
 
 		} 
+	}
 
-
-		else if(event.keyCode === 32){							// Si la touche pressée est espace
+	
+	function espace (event){
+		if(event.keyCode === 32){							// Si la touche pressée est espace
+			
 			tir();
 
 		}
 	}
-
-	
 
 
 
