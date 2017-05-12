@@ -55,7 +55,7 @@ function go(){
             tir.setAttribute('class', 'balle');
             chat.appendChild(tir);
             var styleTir = getComputedStyle(tir);
-            var id = setInterval(moveShoot, 01);
+            var id = setInterval(moveShoot, 001);
             var pos = 0;
             
             
@@ -97,12 +97,12 @@ var wInvaders = invadersGroup.offsetWidth;
 var wMove = wScreen - wInvaders - (margeGauche*2);
 
 var pos = margeGauche;
-var id = setInterval(move, 10);
+var interval = setInterval(move, 10);
 var direction = "droite";
 
 
 function move(){
-
+console.log("coucou")
     if(direction == "droite"){
         
         if (pos < wMove){
