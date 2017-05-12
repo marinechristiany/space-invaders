@@ -147,3 +147,7 @@ section{
 .hidden{
     display: none;
 }
+
+.gagne {
+    background-color: red;
+}
