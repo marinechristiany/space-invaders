@@ -82,6 +82,29 @@ section{
     background-color: #C13A64;
     z-index: 10;
     position: absolute;
+<<<<<<< HEAD
     top: 0;
     left:0;
+=======
+    top: 0px;
+    left: 0px;
+}
+
+.laserennemi{
+    width: 10px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
+    position: relative;
+    left: 35px;
+    bottom: 0;
+}
+
+.hidden{
+    display: none;
+}
+
+.gagne {
+    background-color: red;
+>>>>>>> eaf522a4de5b44633d0ff286a17a3eb963577f21
 }

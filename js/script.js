@@ -11,7 +11,6 @@ var invadersGroup = document.querySelector(".invadersGroup");
 var hInvaderGroup = parseInt(getComputedStyle(invadersGroup).height);
 
 var hUse = hSection - hHeader - hChat;
-var hdownInv = hUse - hInvaderGroup ;
 
 
 
@@ -93,14 +92,13 @@ var direction = "droite";
 var wScreen = window.innerWidth;
 var margeGauche = invadersGroup.offsetLeft;
 var wInvaders = invadersGroup.offsetWidth;
-/*var posGaucheInvaders = parseInt(getComputedStyle(invadersGroup).left);*/
 var wMove = wScreen - wInvaders - (margeGauche*2);
 
 var pos = margeGauche;
 var interval = setInterval(move, 10);
 var direction = "droite";
 
-
+console.log(margeGauche)
 function move(){
 console.log("coucou")
     if(direction == "droite"){
@@ -126,85 +124,3 @@ console.log("coucou")
         }   
     }
 }
-
-
-
-
-/*
-var idD = setInterval(down, 300);
-var idM = setInterval(mouvement, 3000);
-
-var pos = hHeader;
-   
-
-    function mouvement() {
-        console.log(pos + "-" + hdownInv + "-" + invadersGroup.offsetLeft)
-        
-        if((invadersGroup.style.left == 5+"%") && (pos < hdownInv)){
-            invadersGroup.style.left = 35+"%";
-            down(); 
-            
-        } 
-        
-        else if((invadersGroup.style.left == 35+ "%") && (pos < hdownInv)){
-            invadersGroup.style.left = 5+"%";
-            down();
-            
-        }
-        
-        else if(pos >= hdownInv) {
-           clearInterval(idM);
-            
-        }
-   }    
-
-
-    function down() {
-        
-        if (pos >= hdownInv) {
-            clearInterval(idD);
-            
-        } 
-        else {
-            pos++;
-            invadersGroup.style.top = pos + 'px';
-            
-        }
-       
-   }
-*/
-
-
-
-/*
-
-    var pain = document.querySelectorAll(".invader");
-    var tirs = document.querySelectorAll(".tir");
-
-
-function touch(){
-    for(var i=0; i<pain.length; i++){
-        
-    }
-}
-
-*/
-
-
-
-
-/*fontion touché
-si le left du tir se trouve dans un interval compris entre le left et le right dun invader, alors crochet
-si le top du tir est égal au bottom du invader, alors tu ajoute la class hidden au tir et au invader*/
-
-
-
-
-
-
-
-
-
-
-
-
