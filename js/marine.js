@@ -2,7 +2,6 @@
 	var divBouge = document.querySelector('.cat');
 	var shut = document.querySelector('.tir');
 	var style = window.getComputedStyle(divBouge, false);
-	var cpt = 8;
 
 	var startScreen = document.querySelector('.letsplay');
 	var playButton = document.querySelector('.playbutton');
@@ -12,7 +11,7 @@
 
 
 
-	playButton.addEventListener("click", start);
+	playButton.addEventListener("click", start);  // ajoute l'écouteur d'évenement click sur le bouton de la page accueil
 
 
 
@@ -22,8 +21,8 @@
 		startScreen.classList.add('hidden');
 		gameScreen.classList.remove('hidden');
 
-		/*setTimeout("tirEnnemis()", 4000);
-		*/
+		setTimeout("tirEnnemis()", 4000);
+		
 		page.addEventListener("keydown", fleches);			// Ecouteur d'evenement pour les touches du clavier
 		page.addEventListener("keyup", espace);
 
@@ -39,20 +38,20 @@
 		var invaders = document.querySelectorAll('.invader'); // recupere tous les pains de mie
 
 
-		function move(){
+		function move(){ 									// Fait bouger les pains de mie
 
 			var wInvaders = invadersGroup.offsetWidth;
 			var wMove = wScreen - wInvaders - (margeGauche*2);
 
 
-			if(direction == "droite"){
+			if(direction == "droite"){		
 
 				if (pos < wMove){
 					pos++;
 					invadersGroup.style.left = pos + "px";
 				}
 				else{
-					invadersGroup.style.top = invadersGroup.offsetTop + 5 + "px";
+					invadersGroup.style.top = invadersGroup.offsetTop + 10 + "px";
 					direction = "gauche";
 				}
 
@@ -63,12 +62,12 @@
 					invadersGroup.style.left = pos + "px";
 				}
 				else{
-					invadersGroup.style.top = invadersGroup.offsetTop + 5 + "px";
+					invadersGroup.style.top = invadersGroup.offsetTop + 10 + "px";
 					direction = "droite";
 				}   
 			}
 
-			if(invadersGroup.getBoundingClientRect().bottom >= parseInt(divBouge.offsetTop + 25)){
+			if(invadersGroup.getBoundingClientRect().bottom >= parseInt(divBouge.offsetTop + 25)){    // affiche perdu si l'un des pains de mie touchent le chat
 
 				for(var g=0; g<invaders.length; g++){
 					if(invaders[g].getBoundingClientRect().bottom >= divBouge.getBoundingClientRect().top){
@@ -113,7 +112,6 @@
 		if(event.keyCode === 32){							// Si la touche pressée est espace
 
 			tir();
-			
 
 		}
 	}
@@ -126,7 +124,7 @@
 
 
 
-	function tir (){
+	function tir (){                                                        // Permet au chat de tirer
 		var bulletsDiv = document.querySelector('.bulletsdiv');
 		var bulletsDivWidth = window.getComputedStyle(bulletsDiv, false).width;
 		var header = document.querySelector('.gameTitle');
@@ -135,19 +133,21 @@
 		var id = setInterval(animBullets, 1);
 		var newBullet =  document.createElement("div");
 		var invaders = document.querySelectorAll('.invader');
-			if(invaders.length == 0){
+
+			if(invaders.length == 0){											// Si il n'y a plus de pain de mie, affiche gagné
 
 				console.log("gagné");
+				looseScreen.classList.add('hidden');
 				gagne();
 
 			}
 
-		newBullet.classList.add('tir');
+		newBullet.classList.add('tir');									// creation des missiles
 		bulletsDiv.appendChild(newBullet);
-		newBullet.style.left = parseInt(divBouge.style.left) - parseInt(newBullet.getBoundingClientRect().left) + (parseInt(bulletsDivWidth)/2.7) + "px";
+		newBullet.style.left = parseInt(divBouge.style.left) - parseInt(newBullet.getBoundingClientRect().left) + (parseInt(bulletsDivWidth)/2.7) + "px";   // deplacement des missiles en mm temps que le chat
 
 
-			function animBullets() {										// fonction qui bouge la div tir
+			function animBullets() {											// fonction qui bouge la div tir
 				if (newBullet.getBoundingClientRect().top == parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(newBullet.getBoundingClientRect().height)) {
 				    clearInterval(id);									// arrete le setInterval quand on arrive a 70px du top de la page
 				    deleteBullet();
@@ -155,9 +155,8 @@
 				} else {
 
 				    pos = pos - 1; 												// ajoute 1 a pos
-				    newBullet.style.top =  pos + 'px';
-				    killInvader();
-						// modifie la position top de la div tir
+				    newBullet.style.top =  pos + 'px';									// modifie la position top de la div tir
+				    killInvader();	
 
 				}
 			}
@@ -170,9 +169,9 @@
 
 
 
-		function tirEnnemis (){
+		function tirEnnemis (){					//tirs ennemis
 			var tabBulletsEnnemis = document.querySelectorAll('.invader');
-			var x = parseInt(Math.random()*(tabBulletsEnnemis.length));
+			var x = parseInt(Math.random()*(tabBulletsEnnemis.length));  // permettra le choix aleatoire du pain de mie qui tir
 			var ennemiSelected = tabBulletsEnnemis[x];
 			var header = document.querySelector('.gameTitle');
 			var headerHeight = header.getBoundingClientRect();
@@ -181,16 +180,12 @@
 			var newBullet =  document.createElement("div");
 			var invadersGroup = document.querySelector(".invadersGroup");
 
-			newBullet.classList.add('laserennemi');
+			newBullet.classList.add('laserennemi');   // creation des lasers ennemis
 			tabBulletsEnnemis[x].appendChild(newBullet);
 
-			for(var w=0; w<tabBulletsEnnemis.length; w++){
-				tabBulletsEnnemis[w].style.left = - parseInt(document.querySelector('.invader').getBoundingClientRect().width) + "px";
-			}
 
-
-			function animBullets() {										// fonction qui bouge la div tir
-				if (newBullet.getBoundingClientRect().top == -(parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(newBullet.getBoundingClientRect().height))) {
+			function animBullets() {								// fonction qui bouge le laser ennemi
+				if (newBullet.getBoundingClientRect().top == -(parseInt(headerHeight.height) + parseInt(headerHeight.top) + parseInt(newBullet.getBoundingClientRect().height))) {   //quand le laser touche le bas de l'ecran il se suppr
 				    clearInterval(id);									// arrete le setInterval quand on arrive a 70px du top de la page
 				    deleteBullet();
 
@@ -202,7 +197,7 @@
 				}
 			}
 
-			setTimeout("tirEnnemis()", 3000);
+			setTimeout("tirEnnemis()", 3000);   // declenche la fonction tir ennemis toutes les 3secondes.
 		}
 
 
@@ -210,7 +205,7 @@
 
 
 
-		function deleteBullet(){
+		function deleteBullet(){   // suppression de la confiture quand elle touche la border bottom du header
 			var bulletsDiv = document.querySelector('.bulletsdiv');
 			var shuts = document.querySelectorAll('.tir');
 
@@ -229,30 +224,27 @@
 
 
 
-		function killInvader(){
+		function killInvader(){					// fonction qui efface le pain de mie touché
 			var bulletsDiv = document.querySelector('.bulletsdiv');
 			var shuts = document.querySelectorAll('.tir');
-		
-			var cpt = 0;
-
 			var invaders = document.querySelectorAll('.invader');
 
 
 
 
-				for(j=0; j<shuts.length; j++){
+				for(j=0; j<shuts.length; j++){   //boucle qui vérifie toute la confiture
 
-					for(i=0; i<invaders.length; i++){
+					for(i=0; i<invaders.length; i++){		//boucle qui vérifie tous les pains de mie
 
 
 
-						if(parseInt(shuts[j].getBoundingClientRect().left) >= parseInt(invaders[i].getBoundingClientRect().left)  && parseInt(shuts[j].getBoundingClientRect().right) <= parseInt(invaders[i].getBoundingClientRect().right)){
-							if(parseInt(shuts[j].getBoundingClientRect().top) >= parseInt(invaders[i].getBoundingClientRect().top) && parseInt(shuts[j].getBoundingClientRect().bottom) <= parseInt(invaders[i].getBoundingClientRect().bottom)){
-								invaders[i].classList.add('invader-hidden');
-								invaders[i].classList.remove('invader');
+						if(parseInt(shuts[j].getBoundingClientRect().left) >= parseInt(invaders[i].getBoundingClientRect().left)  && parseInt(shuts[j].getBoundingClientRect().right) <= parseInt(invaders[i].getBoundingClientRect().right)){		// si la confiture est comprise entre gauche et droite du pain de mie
+							if(parseInt(shuts[j].getBoundingClientRect().top) >= parseInt(invaders[i].getBoundingClientRect().top) && parseInt(shuts[j].getBoundingClientRect().bottom) <= parseInt(invaders[i].getBoundingClientRect().bottom)){		// si la confiture est comprise entre haut et bas du pain de mie
+								invaders[i].classList.add('invader-hidden');	//ajoute la classe cachée au pain de mie
+								invaders[i].classList.remove('invader');		// suppr la class pain de mie
 
-								shuts[j].classList.add('hidden');
-								bulletsDiv.removeChild(shuts[j]);
+								shuts[j].classList.add('hidden');		// ajoute la classe cachée à la confiture
+								bulletsDiv.removeChild(shuts[j]);			// supprime la div de la confiture
 							}
 						}
 					}
@@ -266,18 +258,18 @@
 
 
 
-		function perdu() {
+		function perdu() {		//fonction perdu quand touché par un laser ennemi
 
 			var allLaserEnnemi = document.querySelectorAll('.laserennemi');
 
-			for(var y=0; y<allLaserEnnemi.length; y++){
+			for(var y=0; y<allLaserEnnemi.length; y++){			//boucle qui compare tous les lasers ennemis
 
-				if(parseInt(allLaserEnnemi[y].getBoundingClientRect().left) >= parseInt(divBouge.getBoundingClientRect().left)  && parseInt(allLaserEnnemi[y].getBoundingClientRect().right) <= parseInt(divBouge.getBoundingClientRect().right)){
+				if(parseInt(allLaserEnnemi[y].getBoundingClientRect().left) >= parseInt(divBouge.getBoundingClientRect().left)  && parseInt(allLaserEnnemi[y].getBoundingClientRect().right) <= parseInt(divBouge.getBoundingClientRect().right)){ // si la confiture est comprise entre gauche et droite du chat
 
-					if(parseInt(allLaserEnnemi[y].getBoundingClientRect().top) >= parseInt(divBouge.getBoundingClientRect().top) && parseInt(allLaserEnnemi[y].getBoundingClientRect().bottom) <= parseInt(divBouge.getBoundingClientRect().bottom)){
+					if(parseInt(allLaserEnnemi[y].getBoundingClientRect().top) >= parseInt(divBouge.getBoundingClientRect().top) && parseInt(allLaserEnnemi[y].getBoundingClientRect().bottom) <= parseInt(divBouge.getBoundingClientRect().bottom)){ //si la confiture est comprise entre bas et haut du chat
 
-						looseScreen.classList.remove('hidden');
-						gameScreen.classList.add('hidden');
+						looseScreen.classList.remove('hidden');  //enlève la classe cachée à l'écran perdu
+						gameScreen.classList.add('hidden');			// ajoute la classe cachée à l'écran du jeu
 
 					}
 				} 
@@ -285,14 +277,15 @@
 		}
 
 
-		function gagne() {
+		function gagne() {			// fonction gagné
 
 			var invaders = document.querySelectorAll('.invader');
 			var winScreen = document.querySelector('.gagne');
-			if (invaders.length == 0) {
-				winScreen.classList.remove('hidden');
-				winScreen.classList.add('hidden');
-			}
+			var looseScreen = document.querySelector('.loose')
+
+				winScreen.classList.remove('hidden');		//enleve la classe cachée à l'écran gagné
+				gameScreen.classList.add('hidden');			// ajoute la classe cachée à l'écran du jeu
+				looseScreen.classList.add('hidden');		// par sécurité, ajoute la classe cachée à l'écran perdu
 		}
 
 
